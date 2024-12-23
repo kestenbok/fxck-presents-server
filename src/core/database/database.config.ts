@@ -9,11 +9,11 @@ export class DatabaseConfig implements TypeOrmOptionsFactory {
   createTypeOrmOptions(): TypeOrmModuleOptions {
     return {
       type: 'postgres',
-      host: this.configService.get('POSTGRES_HOST'),
-      port: this.configService.get('POSTGRES_PORT'),
-      username: this.configService.get('POSTGRES_USER'),
-      password: this.configService.get('POSTGRES_PASSWORD'),
-      database: this.configService.get('POSTGRES_DB'),
+      host: this.configService.getOrThrow('POSTGRES_HOST'),
+      port: this.configService.getOrThrow('POSTGRES_PORT'),
+      username: this.configService.getOrThrow('POSTGRES_USER'),
+      password: this.configService.getOrThrow('POSTGRES_PASSWORD'),
+      database: this.configService.getOrThrow('POSTGRES_DB'),
       // @TODO: replace with migrations
       synchronize: true,
       autoLoadEntities: true,

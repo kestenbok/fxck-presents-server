@@ -1,0 +1,10 @@
+pgdata/
+node_modules/
+dist/
+.vscode/
+.git/
+.gitignore
+
+Dockerfile*
+docker-compose*
+*.log
