@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import { BaseEntity } from 'src/core/database/entity/base.entity';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -10,6 +11,7 @@ export class User extends BaseEntity<User> {
   email: string;
 
   @Column()
+  @Exclude()
   password: string;
 
   @Column()
