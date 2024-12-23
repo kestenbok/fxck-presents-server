@@ -1,0 +1,25 @@
+services:
+  api:
+    container_name: api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+      - 9229:9229
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+    command: 'pnpm ${CMD}'
+
+  db:
+    image: postgres
+    restart: always
+    env_file:
+      - .env
+    container_name: db
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
