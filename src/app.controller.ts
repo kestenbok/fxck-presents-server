@@ -1,12 +1,14 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { Controller, Get, HttpCode, HttpStatus } from '@nestjs/common';
+import { Public } from './core/decorators/public.decorator';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor() {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @Public()
+  @Get('/health')
+  @HttpCode(HttpStatus.OK)
+  healthcheck() {
+    return { status: 'ok' };
   }
 }

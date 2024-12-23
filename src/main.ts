@@ -8,6 +8,7 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
 
   app.useGlobalPipes(new ValidationPipe());
+  app.setGlobalPrefix('api');
 
   await app.listen(configService.getOrThrow<number>('PORT'));
 }
