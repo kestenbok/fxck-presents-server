@@ -18,12 +18,7 @@ export class WishlistController {
   constructor(private readonly wishlistService: WishlistService) {}
 
   @Get()
-  async listWishlists(@CurrentUser() user: User) {
-    /**
-     * @todo: In the near future we will need to add
-     * all of the wishlists that the user's been invited to
-     * onto this list as well
-     */
+  async listOwnWishlists(@CurrentUser() user: User) {
     return this.wishlistService.listByUserId(user.id);
   }
 
@@ -51,7 +46,7 @@ export class WishlistController {
     @Body() dto: CreateWishlistDto,
     @CurrentUser() user: User,
   ) {
-    const canUpdate = await this.wishlistService.userCanMutate(user.id, id);
+    const canUpdate = await this.wishlistService.canUserMutate(user.id, id);
 
     if (!canUpdate) {
       throw new ForbiddenException();
@@ -62,7 +57,7 @@ export class WishlistController {
 
   @Delete(':id')
   async removeWishlist(@Param('id') id: number, @CurrentUser() user: User) {
-    const canRemove = await this.wishlistService.userCanMutate(user.id, id);
+    const canRemove = await this.wishlistService.canUserMutate(user.id, id);
 
     if (!canRemove) {
       throw new ForbiddenException();

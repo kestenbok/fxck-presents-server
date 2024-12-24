@@ -1,4 +1,10 @@
-import { IsArray, IsDateString, IsString, IsUrl } from 'class-validator';
+import {
+  IsArray,
+  IsDateString,
+  IsNumber,
+  IsString,
+  IsUrl,
+} from 'class-validator';
 
 export class CreateWishlistDto {
   @IsString()
@@ -11,6 +17,9 @@ export class CreateWishlistDto {
   // @todo: Validate type of array items
   // Could probably use a custom decorator
   items: WishlistItemDto[];
+
+  @IsNumber(undefined, { each: true })
+  participantIds: number[];
 }
 
 export class WishlistItemDto {

@@ -1,4 +1,11 @@
-import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
 import { BaseEntity } from 'src/core/database/entity/base.entity';
 import { WishlistItem } from './wishlist-item.entity';
 import { User } from 'src/modules/user/entities/user.entity';
@@ -11,7 +18,11 @@ export class Wishlist extends BaseEntity<Wishlist> {
   @Column()
   dueDate: Date;
 
-  @ManyToOne(() => User, (user) => user.wishlists)
+  @JoinTable({ name: 'wishlist_participants' })
+  @ManyToMany(() => User, (user) => user.friendsWishlists)
+  participants: User[];
+
+  @ManyToOne(() => User, (user) => user.ownWishlists)
   creator: User;
 
   @OneToMany(() => WishlistItem, (item) => item.wishlist, {

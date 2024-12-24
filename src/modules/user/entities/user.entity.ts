@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany } from 'typeorm';
+import { Column, Entity, ManyToMany, OneToMany } from 'typeorm';
 import { Exclude } from 'class-transformer';
 
 import { BaseEntity } from 'src/core/database/entity/base.entity';
@@ -19,7 +19,10 @@ export class User extends BaseEntity<User> {
   nickname: string;
 
   @OneToMany(() => Wishlist, (wishlist) => wishlist.creator)
-  wishlists: Wishlist[];
+  ownWishlists: Wishlist[];
+
+  @ManyToMany(() => Wishlist, (wishlist) => wishlist.participants)
+  friendsWishlists: Wishlist[];
 
   @OneToMany(() => Friendship, (friendship) => friendship.userA)
   friends: Friendship[];

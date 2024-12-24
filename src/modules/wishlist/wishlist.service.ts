@@ -30,24 +30,26 @@ export class WishlistService {
   }
 
   async update(id: number, dto: CreateWishlistDto) {
-    const items = dto.items.map((item) => new WishlistItem(item));
-    const wishlist = await this.wishlistRepository.findOneBy({ id });
+    const wishlist = await this.wishlistRepository.findOne({ where: { id } });
 
     if (!wishlist) {
       throw new WishlistDoesNotExistException();
     }
 
-    wishlist.name = dto.name;
-    wishlist.dueDate = new Date(dto.dueDate);
-    wishlist.items = items;
-
-    return this.wishlistRepository.save(wishlist);
+    return await this.wishlistRepository.save({
+      ...wishlist,
+      name: dto.name,
+      dueDate: dto.dueDate,
+      items: dto.items,
+      // @todo: these should only be friends of the user
+      participants: dto.participantIds.map((id) => ({ id })),
+    });
   }
 
   async getById(id: number) {
     return this.wishlistRepository.findOne({
       where: { id },
-      relations: { items: true },
+      relations: { items: true, participants: true },
     });
   }
 
@@ -59,7 +61,7 @@ export class WishlistService {
     return this.wishlistRepository.delete({ id });
   }
 
-  async userCanMutate(userId: number, wishlistId: number) {
+  async canUserMutate(userId: number, wishlistId: number) {
     const wishlist = await this.wishlistRepository.findOne({
       where: { id: wishlistId },
       relations: { creator: true },
