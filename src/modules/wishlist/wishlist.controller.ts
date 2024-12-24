@@ -10,10 +10,10 @@ import {
 } from '@nestjs/common';
 import { WishlistService } from './wishlist.service';
 import { CurrentUser } from '../user/current-user.decorator';
-import { User } from '../user/user.entity';
+import { User } from '../user/entities/user.entity';
 import { CreateWishlistDto } from './dto/create-wishlist.dto';
 
-@Controller('wishlist')
+@Controller('wishlists')
 export class WishlistController {
   constructor(private readonly wishlistService: WishlistService) {}
 

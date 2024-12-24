@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { Wishlist } from './entities/wishlist.entity';
 import { CreateWishlistDto } from './dto/create-wishlist.dto';
 import { WishlistItem } from './entities/wishlist-item.entity';
-import { User } from '../user/user.entity';
+import { User } from '../user/entities/user.entity';
 import { WishlistDoesNotExistException } from './errors/wishlist-does-not-exist.error';
 
 @Injectable()

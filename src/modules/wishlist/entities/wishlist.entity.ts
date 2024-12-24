@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
-import { User } from '../../user/user.entity';
 import { BaseEntity } from 'src/core/database/entity/base.entity';
 import { WishlistItem } from './wishlist-item.entity';
+import { User } from 'src/modules/user/entities/user.entity';
 
 @Entity()
 export class Wishlist extends BaseEntity<Wishlist> {

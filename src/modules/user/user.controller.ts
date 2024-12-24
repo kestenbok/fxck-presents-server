@@ -1,9 +1,9 @@
 import { Controller, Get } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CurrentUser } from './current-user.decorator';
-import { User } from './user.entity';
+import { User } from './entities/user.entity';
 
-@Controller('user')
+@Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
