@@ -1,13 +1,14 @@
 import { Controller, Get } from '@nestjs/common';
 import { UserService } from './user.service';
-import { UserID } from './user-id.decorator';
+import { CurrentUser } from './current-user.decorator';
+import { User } from './user.entity';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get('/me')
-  async getSelf(@UserID() id: number) {
-    return this.userService.getById(id);
+  async getSelf(@CurrentUser() user: User) {
+    return user;
   }
 }

@@ -1,12 +1,11 @@
+import { Column, Entity, OneToMany } from 'typeorm';
 import { Exclude } from 'class-transformer';
+
 import { BaseEntity } from 'src/core/database/entity/base.entity';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Wishlist } from '../wishlist/entities/wishlist.entity';
 
 @Entity()
 export class User extends BaseEntity<User> {
-  @PrimaryGeneratedColumn()
-  id: number;
-
   @Column()
   email: string;
 
@@ -16,4 +15,7 @@ export class User extends BaseEntity<User> {
 
   @Column()
   nickname: string;
+
+  @OneToMany(() => Wishlist, (wishlist) => wishlist.creator)
+  wishlists: Wishlist[];
 }
