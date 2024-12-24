@@ -49,12 +49,18 @@ export class WishlistService {
   async getById(id: number) {
     return this.wishlistRepository.findOne({
       where: { id },
-      relations: { items: true, participants: true },
+      relations: { items: true, participants: true, creator: true },
     });
   }
 
   async listByUserId(userId: number) {
     return this.wishlistRepository.findBy({ creator: { id: userId } });
+  }
+
+  async listByParticipantId(participantId: number) {
+    return this.wishlistRepository.findBy({
+      participants: { id: participantId },
+    });
   }
 
   async remove(id: number) {
@@ -68,5 +74,14 @@ export class WishlistService {
     });
 
     return wishlist.creator.id === userId;
+  }
+
+  async canUserAccess(userId: number, wishlist: Wishlist) {
+    const isOwner = wishlist.creator.id === userId;
+    const isParticipant = wishlist.participants.some(
+      (participant) => participant.id === userId,
+    );
+
+    return isOwner || isParticipant;
   }
 }

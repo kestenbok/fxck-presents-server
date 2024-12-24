@@ -17,19 +17,25 @@ import { CreateWishlistDto } from './dto/create-wishlist.dto';
 export class WishlistController {
   constructor(private readonly wishlistService: WishlistService) {}
 
-  @Get()
+  @Get('/own')
   async listOwnWishlists(@CurrentUser() user: User) {
     return this.wishlistService.listByUserId(user.id);
   }
 
+  @Get('/participating')
+  async listParticipatingWishlists(@CurrentUser() user: User) {
+    return this.wishlistService.listByParticipantId(user.id);
+  }
+
   @Get(':id')
-  async getById(@Param('id') id: number) {
-    /**
-     * @todo: will need to check whether the wishlist is:
-     * a) created by the user
-     * b) one that the user's been invited to
-     */
-    return this.wishlistService.getById(id);
+  async getById(@Param('id') id: number, @CurrentUser() user: User) {
+    const wishlist = await this.wishlistService.getById(id);
+
+    if (!this.wishlistService.canUserAccess(user.id, wishlist)) {
+      throw new ForbiddenException();
+    }
+
+    return wishlist;
   }
 
   @Post()
