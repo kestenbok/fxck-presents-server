@@ -3,6 +3,9 @@ CONTAINER_NAME=api
 up:
 	CMD="start:dev" docker compose up -d
 
+init:
+	cp .env.example .env && pnpm i
+
 debug:
 	CMD="start:debug" docker compose up -d
 

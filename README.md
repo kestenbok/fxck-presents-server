@@ -1,99 +1,77 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+## 👋 Welcome
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+You've reached fxck presents' (better name coming soon) server - written in TypeScript and powered by [NestJS](https://docs.nestjs.com/)
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 🏃‍♂️ Getting started
 
-## Description
+Running this project requires two dependencies to be installed on your machine:
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Project setup
+- [pnpm](https://pnpm.io/installation)
+- [docker](https://www.docker.com/) (and compose)
 
 ```bash
-$ pnpm install
+# will take care of installing your dependencies
+# and creating a .env file for you
+$ make init
+
+# will spin up your development server
+$ make up
+
+# (optional) will seed your database (🚧 coming soon)
+$ make run-seeders
+
+# will verify that the server is running
+$ curl localhost:3000/api/health
 ```
 
-## Compile and run the project
+## 🐛 Debugging
+
+In order to connect a debugger to our server we can use `$ make debug` instead of `$ make up` when spinning our environment up. This will run Nest with debugging support enabled and accepting connections on localhost:9229.
+
+A VSCode debug configuration is included in this project ('./vscode/launch.json'). When using any other editor you'd want to follow its own documentation and attach a node debugger to localhost:9229, while configuring its root to point to the workspace in our Docker image - '/app'
+
+## 🔨 Useful make commands
+
+| Command               | Action                                                                                      |
+| --------------------- | ------------------------------------------------------------------------------------------- |
+| make init             | Initializes the project                                                                     |
+| make up               | Spins containers up in detached mode                                                        |
+| make debug            | Spins containers up in detached mode with debugging enabled                                 |
+| make down             | Spins containers down                                                                       |
+| make build            | Does a clean build of the docker image. Useful for things like post-install of a dependency |
+| make clean            | Removes node modules as well as build arfitacts                                             |
+| make attach           | Attaches to the container's shell, allowing you to execute bash commands                    |
+| make logs             | Connects to the container's STDOUT, providing a stream of logs                              |
+| make new-migration    | Generates a new migration file                                                              |
+| make run-migrations   | Runs any pending database migrations                                                        |
+| make run-seeders      | Seeds the database                                                                          |
+| make revert-migration | Reverts the last migration                                                                  |
+
+## 🪹 Migrations (🚧 coming soon)
+
+During development of the MVP migrations are not being used. Instead TypeORM manages the DB schema under the hood, enabled via the `synchronize` option in our [Database Config](src/core/database/database.config.ts). This will not be the case anymore when our environments start getting regular usage. Then migrations will become the go to. The shift from synchronize -> migrations is a three step process:
+
+- synchronization is disabled and migration runs are enabled
+- the DB is dropped
+- a migration is generated to initialize the database
+
+#### Working with Migrations
+
+TypeORM provides useful helpers that can create/run/revert/generate migrations. Here's a quick look at the commands we have defined:
 
 ```bash
-# development
-$ pnpm run start
+# will generate a migration by diffing the DB schema and the registered entities
+$ make new-migration name=CreateUserTable
 
-# watch mode
-$ pnpm run start:dev
+# will run all new migrations
+$ make run-migrations
 
-# production mode
-$ pnpm run start:prod
+# will revert the last migration that was ran
+# this may be ran as many times as necessary, depending on the
+# number of migrations that need to be reverted
+$ make revert-migration
 ```
 
-## Run tests
+#### Tip
 
-```bash
-# unit tests
-$ pnpm run test
-
-# e2e tests
-$ pnpm run test:e2e
-
-# test coverage
-$ pnpm run test:cov
-```
-
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ pnpm install -g mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+The migrations that we create/run via the CLI use the generated build output. If you're experiencing any unexpected behaviour running `pnpm build` and re-running your command is a good sanity check.
