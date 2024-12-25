@@ -4,6 +4,7 @@ import {
   Delete,
   ForbiddenException,
   Get,
+  NotFoundException,
   Param,
   Patch,
   Post,
@@ -12,6 +13,7 @@ import { WishlistService } from './wishlist.service';
 import { CurrentUser } from '../user/current-user.decorator';
 import { User } from '../user/entities/user.entity';
 import { CreateWishlistDto } from './dto/create-wishlist.dto';
+import { OwnerCannotReserveItemException } from './errors/owner-cannot-reserve-item.error';
 
 @Controller('wishlists')
 export class WishlistController {
@@ -59,6 +61,38 @@ export class WishlistController {
     }
 
     return this.wishlistService.update(id, dto);
+  }
+
+  @Post(':id/reserve-item/:itemId')
+  async toggleReserveWishlistItem(
+    @Param('id') wishlistId: number,
+    @Param('itemId') wishlistItemId: number,
+    @CurrentUser() user: User,
+  ) {
+    const wishlist = await this.wishlistService.getById(wishlistId);
+
+    if (!wishlist) {
+      throw new NotFoundException();
+    }
+
+    const canReserve = await this.wishlistService.canUserAccess(
+      user.id,
+      wishlist,
+    );
+
+    if (!canReserve) {
+      throw new ForbiddenException();
+    }
+
+    if (wishlist.creator.id === user.id) {
+      throw new OwnerCannotReserveItemException();
+    }
+
+    return this.wishlistService.toggleItemReserved(
+      wishlist,
+      +wishlistItemId,
+      user,
+    );
   }
 
   @Delete(':id')

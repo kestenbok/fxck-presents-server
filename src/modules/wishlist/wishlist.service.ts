@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -7,12 +7,16 @@ import { CreateWishlistDto } from './dto/create-wishlist.dto';
 import { WishlistItem } from './entities/wishlist-item.entity';
 import { User } from '../user/entities/user.entity';
 import { WishlistDoesNotExistException } from './errors/wishlist-does-not-exist.error';
+import { ItemAlreadyReservedException } from './errors/item-already-reserved.error';
 
 @Injectable()
 export class WishlistService {
   constructor(
     @InjectRepository(Wishlist)
     private readonly wishlistRepository: Repository<Wishlist>,
+
+    @InjectRepository(WishlistItem)
+    private readonly wishlistItemRepository: Repository<WishlistItem>,
   ) {}
 
   async create(dto: CreateWishlistDto, creator: User) {
@@ -65,6 +69,32 @@ export class WishlistService {
 
   async remove(id: number) {
     return this.wishlistRepository.delete({ id });
+  }
+
+  async toggleItemReserved(
+    wishlist: Wishlist,
+    itemId: number,
+    reservedBy: User,
+  ) {
+    const item = wishlist.items.find((item) => item.id === itemId);
+
+    if (!item) {
+      throw new NotFoundException();
+    }
+
+    if (!item.reservedBy) {
+      item.reservedBy = reservedBy;
+
+      return this.wishlistItemRepository.save(item);
+    }
+
+    if (item.reservedBy.id === reservedBy.id) {
+      item.reservedBy = null;
+
+      return this.wishlistItemRepository.save(item);
+    }
+
+    throw new ItemAlreadyReservedException();
   }
 
   async canUserMutate(userId: number, wishlistId: number) {
