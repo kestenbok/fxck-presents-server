@@ -1,13 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import type { Repository } from 'typeorm';
 
-import { Wishlist } from './entities/wishlist.entity';
-import { CreateWishlistDto } from './dto/create-wishlist.dto';
+import type { User } from '../user/entities/user.entity';
+import type { CreateWishlistDto } from './dto/create-wishlist.dto';
 import { WishlistItem } from './entities/wishlist-item.entity';
-import { User } from '../user/entities/user.entity';
-import { WishlistDoesNotExistException } from './errors/wishlist-does-not-exist.error';
+import { Wishlist } from './entities/wishlist.entity';
 import { ItemAlreadyReservedException } from './errors/item-already-reserved.error';
+import { WishlistDoesNotExistException } from './errors/wishlist-does-not-exist.error';
 
 @Injectable()
 export class WishlistService {
@@ -34,7 +34,9 @@ export class WishlistService {
   }
 
   async update(id: number, dto: CreateWishlistDto) {
-    const wishlist = await this.wishlistRepository.findOne({ where: { id } });
+    const wishlist = await this.wishlistRepository.findOne({
+      where: { id },
+    });
 
     if (!wishlist) {
       throw new WishlistDoesNotExistException();

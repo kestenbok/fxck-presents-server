@@ -6,10 +6,10 @@ import {
   Param,
   Post,
 } from '@nestjs/common';
-import { FriendsService } from './friends.service';
 import { CurrentUser } from '../user/current-user.decorator';
-import { User } from '../user/entities/user.entity';
-import { AnswerFriendRequestDto } from './dto/answer-friend-request.dto';
+import type { User } from '../user/entities/user.entity';
+import type { AnswerFriendRequestDto } from './dto/answer-friend-request.dto';
+import type { FriendsService } from './friends.service';
 
 @Controller('friends')
 export class FriendsController {

@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
+import type { JwtService } from '@nestjs/jwt';
 
-import { CreateUserDto } from '../user/dto/create-user.dto';
-import { UserService } from '../user/user.service';
-import { HasherService } from './hasher.service';
+import type { CreateUserDto } from '../user/dto/create-user.dto';
+import type { UserService } from '../user/user.service';
 import { EmailInUseException } from './errors/email-in-use.error';
 import { InvalidCredentialsException } from './errors/invalid-credentials.error';
+import type { HasherService } from './hasher.service';
 
 @Injectable()
 export class AuthService {

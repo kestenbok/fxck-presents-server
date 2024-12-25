@@ -1,7 +1,7 @@
-import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
-import { HttpsOptions } from '@nestjs/common/interfaces/external/https-options.interface';
+import type { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
+import type { HttpsOptions } from '@nestjs/common/interfaces/external/https-options.interface';
 import { NestFactory } from '@nestjs/core';
-import { NestExpressApplication } from '@nestjs/platform-express';
+import type { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from 'src/app.module';
 
 export async function configureServer() {
