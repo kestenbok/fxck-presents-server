@@ -1,8 +1,8 @@
 import { ConfigService } from '@nestjs/config';
 
-import { configureServer } from './bootstrap/server.bootstrap';
-import { configureGlobals } from './bootstrap/globals.bootstrap';
-import { configureOpenApi } from './bootstrap/openapi.bootstrap';
+import { configureServer } from './bootstrap/server.config';
+import { configureGlobals } from './bootstrap/globals.config';
+import { configureOpenApi } from './bootstrap/openapi.config';
 
 async function bootstrap() {
   const app = await configureServer();
