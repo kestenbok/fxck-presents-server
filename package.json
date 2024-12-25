@@ -22,7 +22,8 @@
     "migration:create": "scripts/create-migration.sh",
     "migration:generate": "scripts/generate-migration.sh",
     "migration:revert": "typeorm migration:revert -d typeorm.config.js",
-    "migration:run": "typeorm migration:run -d typeorm.config.js"
+    "migration:run": "typeorm migration:run -d typeorm.config.js",
+    "prepare": "husky"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
@@ -51,6 +52,7 @@
     "@types/jest": "^29.5.2",
     "@types/node": "^20.3.1",
     "@types/supertest": "^6.0.0",
+    "husky": "9.1.7",
     "jest": "^29.5.0",
     "prettier": "^3.0.0",
     "source-map-support": "^0.5.21",
