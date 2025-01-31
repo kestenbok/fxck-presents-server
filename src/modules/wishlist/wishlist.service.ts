@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import type { Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 
-import type { User } from '../user/entities/user.entity';
-import type { CreateWishlistDto } from './dto/create-wishlist.dto';
+import { User } from '../user/entities/user.entity';
+import { CreateWishlistDto } from './dto/create-wishlist.dto';
 import { WishlistItem } from './entities/wishlist-item.entity';
 import { Wishlist } from './entities/wishlist.entity';
 import { ItemAlreadyReservedException } from './errors/item-already-reserved.error';

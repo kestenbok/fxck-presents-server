@@ -10,10 +10,10 @@ import {
   Post,
 } from '@nestjs/common';
 import { CurrentUser } from '../user/current-user.decorator';
-import type { User } from '../user/entities/user.entity';
-import type { CreateWishlistDto } from './dto/create-wishlist.dto';
+import { User } from '../user/entities/user.entity';
+import { CreateWishlistDto } from './dto/create-wishlist.dto';
 import { OwnerCannotReserveItemException } from './errors/owner-cannot-reserve-item.error';
-import type { WishlistService } from './wishlist.service';
+import { WishlistService } from './wishlist.service';
 
 @Controller('wishlists')
 export class WishlistController {

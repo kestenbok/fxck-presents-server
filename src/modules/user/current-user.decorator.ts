@@ -6,7 +6,7 @@ import {
 import type { Request } from 'express';
 
 export const CurrentUser = createParamDecorator(
-  (data: unknown, ctx: ExecutionContext) => {
+  (_: unknown, ctx: ExecutionContext) => {
     const request = ctx.switchToHttp().getRequest();
     const user = (request as Request).user;
 

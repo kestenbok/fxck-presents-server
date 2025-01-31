@@ -7,9 +7,9 @@ import {
   Post,
 } from '@nestjs/common';
 import { CurrentUser } from '../user/current-user.decorator';
-import type { User } from '../user/entities/user.entity';
-import type { AnswerFriendRequestDto } from './dto/answer-friend-request.dto';
-import type { FriendsService } from './friends.service';
+import { User } from '../user/entities/user.entity';
+import { AnswerFriendRequestDto } from './dto/answer-friend-request.dto';
+import { FriendsService } from './friends.service';
 
 @Controller('friends')
 export class FriendsController {
